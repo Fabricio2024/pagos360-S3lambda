@@ -20,14 +20,15 @@ make deploy_prod
 ```
 
 Metodos a los que se puede acceder:
-	Listar buckets:
-		- GET - https://m974s3k6og.execute-api.us-east-1.amazonaws.com/prod/list
-	Health endpoint:
-		- GET - https://m974s3k6og.execute-api.us-east-1.amazonaws.com/prod/health
-	Subir archivo a S3
-  		- POST - https://m974s3k6og.execute-api.us-east-1.amazonaws.com/prod/upload
-
 ```
-	form-data
-	input_type: "file"
+Listar buckets:
+	- GET - https://m974s3k6og.execute-api.us-east-1.amazonaws.com/prod/list
+Health endpoint:
+	- GET - https://m974s3k6og.execute-api.us-east-1.amazonaws.com/prod/health
+Subir archivo a S3
+	- POST - https://m974s3k6og.execute-api.us-east-1.amazonaws.com/prod/upload
+
+
+form-data
+input_type: "file"
 ```
