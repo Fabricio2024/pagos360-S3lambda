@@ -67,7 +67,7 @@ func listCSVFilesInS3() ([]ResponseFiles, error) {
 func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 	file, metadata, err := r.FormFile("file")
 	if err != nil {
-		http.Error(w, "Error upload file", http.StatusBadRequest)
+		http.Error(w, "Error upload file: " + err.Error(), http.StatusBadRequest)
 		return
 	}
 	defer file.Close()
@@ -82,7 +82,7 @@ func uploadFileHandler(w http.ResponseWriter, r *http.Request) {
 
 	err = uploadCSVToS3(metadata.Filename, fileContent)
 	if err != nil {
-		http.Error(w, "Error upload file", http.StatusBadRequest)
+		http.Error(w, "Error upload file in S3: " + err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -113,14 +113,12 @@ func listFilesHandler(w http.ResponseWriter, r *http.Request) {
 
 func Init() {
 	r := mux.NewRouter()
-	//r.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
-	//	io.WriteString(w, "Hello test")
-	//})
-	//r.HandleFunc("/upload", uploadFileHandler).Methods("POST")
+	r.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		io.WriteString(w, "Ready!")
+	})
+	r.HandleFunc("/upload", uploadFileHandler).Methods("POST")
 	r.HandleFunc("/list", listFilesHandler).Methods("GET")
-	//http.Handle("/", r)
-	//log.Println("Starting up on own, port :8080")
-	//http.ListenAndServe(":8080", nil)
+
 
 	lambda.Start(gorillamux.New(r).ProxyWithContext)
 }
